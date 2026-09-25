@@ -1,0 +1,1476 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Carta para Alexia ❤️</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(
+                135deg,
+                #160b25,
+                #3b1261,
+                #68189b
+            );
+
+            font-family:
+                Georgia,
+                "Times New Roman",
+                serif;
+
+            overflow-x: hidden;
+
+            color: white;
+        }
+
+
+        /* =========================
+           ESTRELLAS
+        ========================= */
+
+        body::before {
+
+            content: "";
+
+            position: fixed;
+
+            inset: 0;
+
+            pointer-events: none;
+
+            background-image:
+
+                radial-gradient(
+                    circle,
+                    rgba(255,255,255,.8) 1px,
+                    transparent 1px
+                ),
+
+                radial-gradient(
+                    circle,
+                    rgba(255,255,255,.5) 1px,
+                    transparent 1px
+                );
+
+            background-size:
+                90px 90px,
+                140px 140px;
+
+            background-position:
+                0 0,
+                40px 60px;
+
+            opacity: .35;
+        }
+
+
+        /* =========================
+           NOTIFICACIÓN
+        ========================= */
+
+        .notification {
+
+            position: fixed;
+
+            top: 25px;
+
+            left: 50%;
+
+            transform:
+                translateX(-50%)
+                translateY(-150px);
+
+            background:
+                rgba(255,255,255,.95);
+
+            color: #351044;
+
+            padding:
+                18px 25px;
+
+            border-radius: 18px;
+
+            width:
+                min(90%, 450px);
+
+            text-align: center;
+
+            z-index: 1000;
+
+            box-shadow:
+                0 15px 40px
+                rgba(0,0,0,.3);
+
+            transition:
+                .6s ease;
+        }
+
+        .notification.show {
+
+            transform:
+                translateX(-50%)
+                translateY(0);
+        }
+
+        .notification h3 {
+
+            font-family:
+                Arial,
+                sans-serif;
+
+            margin-bottom: 5px;
+        }
+
+        .close-notification {
+
+            position: absolute;
+
+            right: 15px;
+            top: 10px;
+
+            border: none;
+
+            background: transparent;
+
+            font-size: 25px;
+
+            cursor: pointer;
+
+            color: #555;
+        }
+
+
+        /* =========================
+           SOBRE
+        ========================= */
+
+        .main-container {
+
+            min-height: 100vh;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            padding: 30px;
+        }
+
+        .envelope-wrapper {
+
+            cursor: pointer;
+
+            perspective: 1000px;
+        }
+
+        .envelope {
+
+            width: 320px;
+            height: 220px;
+
+            position: relative;
+
+            background: #8b3f91;
+
+            border-radius: 5px;
+
+            box-shadow:
+                0 25px 60px
+                rgba(0,0,0,.45);
+
+            transition:
+                transform .5s ease;
+        }
+
+        .envelope:hover {
+
+            transform:
+                translateY(-8px)
+                scale(1.03);
+        }
+
+        .envelope::before {
+
+            content: "";
+
+            position: absolute;
+
+            inset: 0;
+
+            background: #6c2c73;
+
+            clip-path:
+                polygon(
+                    0 0,
+                    50% 55%,
+                    100% 0
+                );
+
+            transform-origin: top;
+
+            transition:
+                transform .8s ease;
+
+            z-index: 3;
+        }
+
+        .envelope.open::before {
+
+            transform:
+                rotateX(180deg);
+        }
+
+        .envelope::after {
+
+            content: "";
+
+            position: absolute;
+
+            left: 0;
+            bottom: 0;
+
+            width: 0;
+            height: 0;
+
+            border-left:
+                160px solid transparent;
+
+            border-right:
+                160px solid transparent;
+
+            border-bottom:
+                110px solid #a84eaa;
+
+            z-index: 2;
+        }
+
+        .letter-preview {
+
+            position: absolute;
+
+            width: 270px;
+            height: 180px;
+
+            background: #fffaf5;
+
+            left: 25px;
+            top: 20px;
+
+            border-radius: 5px;
+
+            z-index: 1;
+
+            transition:
+                .8s ease;
+        }
+
+        .envelope.open
+        .letter-preview {
+
+            transform:
+                translateY(-100px);
+        }
+
+        .heart {
+
+            position: absolute;
+
+            z-index: 5;
+
+            left: 50%;
+            top: 52%;
+
+            transform:
+                translate(-50%, -50%);
+
+            font-size: 45px;
+
+            transition:
+                .5s ease;
+        }
+
+        .envelope.open .heart {
+
+            opacity: 0;
+
+            transform:
+                translate(-50%, -50%)
+                scale(.4);
+        }
+
+        .click-text {
+
+            text-align: center;
+
+            margin-top: 25px;
+
+            font-size: 18px;
+
+            animation:
+                pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+
+            0%, 100% {
+                opacity: .6;
+            }
+
+            50% {
+                opacity: 1;
+            }
+        }
+
+
+        /* =========================
+           CARTA
+        ========================= */
+
+        .letter-modal {
+
+            position: fixed;
+
+            inset: 0;
+
+            background:
+                rgba(10,4,18,.82);
+
+            backdrop-filter:
+                blur(7px);
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            padding: 20px;
+
+            opacity: 0;
+
+            visibility: hidden;
+
+            transition:
+                .5s ease;
+
+            z-index: 500;
+        }
+
+        .letter-modal.show {
+
+            opacity: 1;
+
+            visibility: visible;
+        }
+
+        .letter {
+
+            width:
+                min(720px,95vw);
+
+            max-height: 88vh;
+
+            overflow-y: auto;
+
+            background:
+                linear-gradient(
+                    rgba(255,250,242,.97),
+                    rgba(255,247,237,.97)
+                );
+
+            color: #3d2930;
+
+            border-radius: 14px;
+
+            padding:
+                45px 50px;
+
+            box-shadow:
+                0 30px 80px
+                rgba(0,0,0,.5);
+
+            position: relative;
+
+            transform:
+                scale(.75)
+                translateY(40px);
+
+            transition:
+                .6s ease;
+        }
+
+        .letter-modal.show .letter {
+
+            transform:
+                scale(1)
+                translateY(0);
+        }
+
+        .close-letter {
+
+            position: absolute;
+
+            top: 12px;
+            right: 17px;
+
+            border: none;
+
+            background: transparent;
+
+            font-size: 30px;
+
+            color: #6a4852;
+
+            cursor: pointer;
+        }
+
+        .letter-title {
+
+            text-align: center;
+
+            font-size: 34px;
+
+            color: #70277d;
+
+            margin-bottom: 30px;
+        }
+
+        .letter-content p {
+
+            font-size: 19px;
+
+            line-height: 1.8;
+
+            margin-bottom: 22px;
+
+            min-height: 25px;
+        }
+
+        .signature {
+
+            margin-top: 30px;
+
+            text-align: right;
+
+            font-size: 20px;
+
+            font-style: italic;
+
+            color: #70277d;
+        }
+
+        .final-message {
+
+            margin-top: 30px;
+
+            text-align: center;
+
+            font-size: 28px;
+
+            font-weight: bold;
+
+            color: #9b236e;
+
+            opacity: 0;
+
+            transform:
+                scale(.7);
+
+            transition:
+                .8s ease;
+        }
+
+        .final-message.show {
+
+            opacity: 1;
+
+            transform:
+                scale(1);
+        }
+
+
+        /* =========================
+           MÚSICA
+        ========================= */
+
+        .music-control {
+
+            position: fixed;
+
+            right: 22px;
+
+            bottom: 22px;
+
+            width: 52px;
+
+            height: 52px;
+
+            border: none;
+
+            border-radius: 50%;
+
+            background:
+                rgba(255,255,255,.95);
+
+            box-shadow:
+                0 8px 25px
+                rgba(0,0,0,.35);
+
+            cursor: pointer;
+
+            font-size: 23px;
+
+            z-index: 1000;
+
+            transition:
+                .3s ease;
+        }
+
+        .music-control:hover {
+
+            transform:
+                scale(1.1);
+        }
+
+
+        /* =========================
+           ERROR MÚSICA
+        ========================= */
+
+        .music-error {
+
+            position: fixed;
+
+            right: 85px;
+
+            bottom: 27px;
+
+            background:
+                rgba(20,10,25,.95);
+
+            color: white;
+
+            padding:
+                10px 15px;
+
+            border-radius: 10px;
+
+            font-family:
+                Arial,
+                sans-serif;
+
+            font-size: 13px;
+
+            opacity: 0;
+
+            pointer-events: none;
+
+            transition:
+                .3s ease;
+
+            z-index: 999;
+        }
+
+        .music-error.show {
+
+            opacity: 1;
+        }
+
+
+        /* =========================
+           CORAZONES
+        ========================= */
+
+        .floating-heart {
+
+            position: fixed;
+
+            bottom: -30px;
+
+            font-size: 20px;
+
+            animation:
+                floatHeart 7s linear infinite;
+
+            opacity: .7;
+
+            pointer-events: none;
+        }
+
+        @keyframes floatHeart {
+
+            from {
+
+                transform:
+                    translateY(0)
+                    rotate(0deg);
+
+                opacity: 0;
+            }
+
+            15% {
+
+                opacity: .7;
+            }
+
+            to {
+
+                transform:
+                    translateY(-110vh)
+                    rotate(360deg);
+
+                opacity: 0;
+            }
+        }
+
+
+        /* =========================
+           CELULAR
+        ========================= */
+
+        @media (max-width:600px) {
+
+            .envelope {
+
+                width: 280px;
+
+                height: 190px;
+            }
+
+            .envelope::after {
+
+                border-left-width:
+                    140px;
+
+                border-right-width:
+                    140px;
+
+                border-bottom-width:
+                    95px;
+            }
+
+            .letter-preview {
+
+                width: 235px;
+
+                height: 155px;
+
+                left: 22px;
+            }
+
+            .letter {
+
+                padding:
+                    38px 25px;
+            }
+
+            .letter-title {
+
+                font-size: 28px;
+            }
+
+            .letter-content p {
+
+                font-size: 17px;
+            }
+
+            .final-message {
+
+                font-size: 23px;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =========================
+         NOTIFICACIÓN
+    ========================= -->
+
+    <div
+        class="notification show"
+        id="notification"
+    >
+
+        <button
+            class="close-notification"
+            id="closeNotification"
+        >
+            ×
+        </button>
+
+        <h3>
+            💌 Tienes un nuevo mensaje
+        </h3>
+
+        <p>
+            Alexia, hay algo especial para ti ❤️
+        </p>
+
+    </div>
+
+
+
+    <!-- =========================
+         SOBRE
+    ========================= -->
+
+    <main class="main-container">
+
+        <div class="envelope-wrapper">
+
+            <div
+                class="envelope"
+                id="letterContainer"
+            >
+
+                <div
+                    class="letter-preview">
+                </div>
+
+                <div class="heart">
+                    ❤️
+                </div>
+
+            </div>
+
+            <div class="click-text">
+                Haz clic para abrir 💌
+            </div>
+
+        </div>
+
+    </main>
+
+
+
+    <!-- =========================
+         CARTA
+    ========================= -->
+
+    <div
+        class="letter-modal"
+        id="letterModal"
+    >
+
+        <article class="letter">
+
+
+            <button
+                class="close-letter"
+                id="closeLetter"
+            >
+                ×
+            </button>
+
+
+            <h1 class="letter-title">
+                Para Alexia ❤️
+            </h1>
+
+
+            <div class="letter-content">
+
+
+                <p id="paragraph1"></p>
+
+                <p id="paragraph2"></p>
+
+                <p id="paragraph3"></p>
+
+                <p id="paragraph4"></p>
+
+                <p id="paragraph5"></p>
+
+                <p id="paragraph6"></p>
+
+                <p id="paragraph7"></p>
+
+
+                <div class="signature">
+
+                    <p id="signature1"></p>
+
+                    <p id="signature2"></p>
+
+                </div>
+
+
+                <div
+                    class="final-message"
+                    id="finalMessage"
+                >
+
+                    Te amo muchísimo, Alexia ❤️
+
+                </div>
+
+
+            </div>
+
+        </article>
+
+    </div>
+
+
+
+    <!-- =========================
+         MÚSICA
+    ========================= -->
+
+    <audio
+        id="backgroundMusic"
+        preload="auto"
+        loop
+    >
+
+        <source
+            src="./El Cuento Piter-G (VideoLyric) (Prod. por Piter-G).mp3"
+            type="audio/mpeg"
+        >
+
+        Tu navegador no puede reproducir audio.
+
+    </audio>
+
+
+    <button
+        class="music-control"
+        id="musicControl"
+        title="Controlar música"
+    >
+
+        🔇
+
+    </button>
+
+
+    <div
+        class="music-error"
+        id="musicError"
+    >
+
+        No se encontró la canción.
+
+    </div>
+
+
+
+    <script>
+
+
+        /* =========================
+           ELEMENTOS
+        ========================= */
+
+        const music =
+            document.getElementById(
+                "backgroundMusic"
+            );
+
+        const musicControl =
+            document.getElementById(
+                "musicControl"
+            );
+
+        const musicError =
+            document.getElementById(
+                "musicError"
+            );
+
+        let musicPlaying = false;
+
+
+
+        /* =========================
+           CARTA
+        ========================= */
+
+        const letterTexts = {
+
+
+            paragraph1:
+
+            "Alexia, hoy cumplimos 7 meses. ❤️ Y quería aprovechar este día para escribirte algo que quizás no siempre sé decirte de la mejor manera cuando estamos hablando. Sé que este último mes fue complicado para los dos, y sé que hubo momentos en los que las cosas entre nosotros se sintieron diferentes. Tuvimos problemas, cometimos errores y hubo situaciones que nos hicieron sentir cosas que ninguno de los dos quería sentir. Pero a pesar de todo eso, seguimos aquí.",
+
+
+            paragraph2:
+
+            "Quiero que sepas que no estoy escribiendo esto para echarte la culpa de lo que pasó. Tampoco quiero que pienses que todo fue responsabilidad tuya. Yo también he cometido errores y sé que hubo momentos en los que pude reaccionar de otra manera, hablar mejor contigo o simplemente intentar entenderte antes de dejar que mis sentimientos hablaran por mí. No soy perfecto y tampoco quiero hacerte sentir que tienes que serlo conmigo.",
+
+
+            paragraph3:
+
+            "Sé que después de todo lo que pasó la confianza se volvió más complicada para mí. No voy a mentirte diciendo que todo está completamente bien cuando todavía hay cosas que me cuestan. Hay momentos en los que pienso demasiado, momentos en los que recuerdo ciertas cosas y me cuesta simplemente dejarlas atrás. Pero también estoy intentando entender que reconstruir algo no ocurre de un día para otro. La confianza necesita tiempo, paciencia y sobre todo acciones de los dos.",
+
+
+            paragraph4:
+
+            "Aun así, quiero que sepas algo muy importante: sigo aquí porque te amo. Si no me importaras, probablemente sería mucho más fácil alejarme y dejar todo atrás. Pero no quiero hacer eso. No quiero que un mes complicado sea capaz de borrar siete meses de conversaciones, risas, momentos bonitos, llamadas, recuerdos y todas esas pequeñas cosas que hicieron que termináramos siendo importantes el uno para el otro.",
+
+
+            paragraph5:
+
+            "También quiero que recuerdes que no todo lo que hemos vivido ha sido malo. Hemos tenido momentos que me hicieron sentir muy feliz y que todavía guardo con cariño. Hemos compartido cosas que probablemente solo nosotros entendemos, hemos hablado durante horas, nos hemos acompañado incluso estando lejos y hemos creado recuerdos que para mí significan muchísimo. Y aunque ahora tengamos cosas que arreglar, todo eso sigue teniendo valor para mí.",
+
+
+            paragraph6:
+
+            "No quiero que nuestros errores sean lo que defina nuestra relación. Quiero que podamos aprender de ellos. Quiero que podamos hablar cuando algo nos moleste en lugar de guardar todo hasta que termine explotando. Quiero que podamos decirnos lo que sentimos sin miedo, escucharnos de verdad y tratar de entendernos incluso cuando no pensemos igual. No espero que todo sea perfecto, porque sé que ninguna relación lo es. Solo quiero que los dos tengamos las ganas de seguir construyendo.",
+
+
+            paragraph7:
+
+            "No sé exactamente cómo será todo lo que viene después de estos siete meses, pero sí sé lo que siento ahora. Te quiero en mi vida y quiero seguir compartiendo cosas contigo. Quiero que podamos recuperar poco a poco esa tranquilidad que tuvimos, volver a confiar, volver a disfrutar sin que nuestros errores estén siempre presentes y seguir creando recuerdos que algún día podamos mirar atrás y recordar con una sonrisa. Gracias por estos siete meses, por los momentos buenos y también por los difíciles, porque incluso ellos nos han enseñado cosas. Y sobre todo, gracias por seguir aquí.",
+
+
+            signature1:
+
+            "Te amo muchísimo, Alexia. ❤️",
+
+
+            signature2:
+
+            "Y aunque este mes haya sido complicado, quiero que sigamos intentándolo juntos."
+
+        };
+
+
+
+        /* =========================
+           ESCRITURA
+           
+           MÍNIMO 8 SEGUNDOS
+        ========================= */
+
+        function typeText(
+            element,
+            text,
+            minimumDuration = 8000
+        ) {
+
+            return new Promise(resolve => {
+
+
+                let index = 0;
+
+                element.textContent = "";
+
+
+                /*
+                   Cada carácter tarda
+                   aproximadamente 45 ms.
+
+                   Pero nunca será menor
+                   de 8 segundos.
+                */
+
+                const duration =
+                    Math.max(
+                        minimumDuration,
+                        text.length * 45
+                    );
+
+
+                const speed =
+                    duration / text.length;
+
+
+                const interval =
+                    setInterval(() => {
+
+
+                        element.textContent +=
+                            text[index];
+
+
+                        index++;
+
+
+                        if (
+                            index >=
+                            text.length
+                        ) {
+
+                            clearInterval(
+                                interval
+                            );
+
+                            resolve();
+
+                        }
+
+
+                    }, speed);
+
+            });
+
+        }
+
+
+
+        /* =========================
+           MÚSICA
+        ========================= */
+
+        function playMusic() {
+
+
+            music.volume = 0.35;
+
+
+            const promise =
+                music.play();
+
+
+            if (
+                promise !== undefined
+            ) {
+
+
+                promise
+                    .then(() => {
+
+
+                        musicPlaying = true;
+
+                        musicControl.textContent =
+                            "🔊";
+
+
+                        musicError.classList.remove(
+                            "show"
+                        );
+
+
+                    })
+                    .catch(error => {
+
+
+                        console.log(
+                            "No se pudo reproducir:",
+                            error
+                        );
+
+
+                        musicPlaying = false;
+
+                        musicControl.textContent =
+                            "🔇";
+
+
+                        musicError.classList.add(
+                            "show"
+                        );
+
+
+                        setTimeout(() => {
+
+                            musicError.classList.remove(
+                                "show"
+                            );
+
+                        }, 4000);
+
+
+                    });
+
+            }
+
+        }
+
+
+
+        /* =========================
+           PAUSAR MÚSICA
+        ========================= */
+
+        function pauseMusic() {
+
+            music.pause();
+
+            musicPlaying = false;
+
+            musicControl.textContent =
+                "🔇";
+        }
+
+
+
+        /* =========================
+           ABRIR CARTA
+        ========================= */
+
+        async function showLetterWithTyping() {
+
+
+            const modal =
+                document.getElementById(
+                    "letterModal"
+                );
+
+
+            const envelope =
+                document.getElementById(
+                    "letterContainer"
+                );
+
+
+            envelope.classList.add(
+                "open"
+            );
+
+
+            setTimeout(() => {
+
+                modal.classList.add(
+                    "show"
+                );
+
+            }, 700);
+
+
+            await new Promise(
+                resolve =>
+                    setTimeout(
+                        resolve,
+                        1000
+                    )
+            );
+
+
+
+            /* PÁRRAFO 1 */
+
+            await typeText(
+
+                document.getElementById(
+                    "paragraph1"
+                ),
+
+                letterTexts.paragraph1
+
+            );
+
+
+
+            /* PÁRRAFO 2 */
+
+            await typeText(
+
+                document.getElementById(
+                    "paragraph2"
+                ),
+
+                letterTexts.paragraph2
+
+            );
+
+
+
+            /* PÁRRAFO 3 */
+
+            await typeText(
+
+                document.getElementById(
+                    "paragraph3"
+                ),
+
+                letterTexts.paragraph3
+
+            );
+
+
+
+            /* PÁRRAFO 4 */
+
+            await typeText(
+
+                document.getElementById(
+                    "paragraph4"
+                ),
+
+                letterTexts.paragraph4
+
+            );
+
+
+
+            /* PÁRRAFO 5 */
+
+            await typeText(
+
+                document.getElementById(
+                    "paragraph5"
+                ),
+
+                letterTexts.paragraph5
+
+            );
+
+
+
+            /* PÁRRAFO 6 */
+
+            await typeText(
+
+                document.getElementById(
+                    "paragraph6"
+                ),
+
+                letterTexts.paragraph6
+
+            );
+
+
+
+            /* PÁRRAFO 7 */
+
+            await typeText(
+
+                document.getElementById(
+                    "paragraph7"
+                ),
+
+                letterTexts.paragraph7
+
+            );
+
+
+
+            /* FIRMA */
+
+            await typeText(
+
+                document.getElementById(
+                    "signature1"
+                ),
+
+                letterTexts.signature1,
+
+                4000
+
+            );
+
+
+            await typeText(
+
+                document.getElementById(
+                    "signature2"
+                ),
+
+                letterTexts.signature2,
+
+                5000
+
+            );
+
+
+
+            /* MENSAJE FINAL */
+
+            document
+                .getElementById(
+                    "finalMessage"
+                )
+                .classList.add(
+                    "show"
+                );
+
+        }
+
+
+
+        /* =========================
+           ABRIR AL HACER CLIC
+        ========================= */
+
+        document
+            .getElementById(
+                "letterContainer"
+            )
+            .addEventListener(
+                "click",
+                () => {
+
+
+                    document
+                        .getElementById(
+                            "notification"
+                        )
+                        .classList.remove(
+                            "show"
+                        );
+
+
+                    playMusic();
+
+
+                    showLetterWithTyping();
+
+                }
+            );
+
+
+
+        /* =========================
+           CONTROL MÚSICA
+        ========================= */
+
+        musicControl.addEventListener(
+            "click",
+            event => {
+
+
+                event.stopPropagation();
+
+
+                if (
+                    musicPlaying
+                ) {
+
+                    pauseMusic();
+
+                } else {
+
+                    playMusic();
+
+                }
+
+            }
+        );
+
+
+
+        /* =========================
+           CERRAR NOTIFICACIÓN
+        ========================= */
+
+        document
+            .getElementById(
+                "closeNotification"
+            )
+            .addEventListener(
+                "click",
+                () => {
+
+
+                    document
+                        .getElementById(
+                            "notification"
+                        )
+                        .classList.remove(
+                            "show"
+                        );
+
+                }
+            );
+
+
+
+        /* =========================
+           CERRAR CARTA
+        ========================= */
+
+        document
+            .getElementById(
+                "closeLetter"
+            )
+            .addEventListener(
+                "click",
+                () => {
+
+
+                    document
+                        .getElementById(
+                            "letterModal"
+                        )
+                        .classList.remove(
+                            "show"
+                        );
+
+                }
+            );
+
+
+
+        /* =========================
+           CORAZONES
+        ========================= */
+
+        function createHeart() {
+
+
+            const heart =
+                document.createElement(
+                    "div"
+                );
+
+
+            heart.className =
+                "floating-heart";
+
+
+            heart.textContent =
+                Math.random() > .5
+                    ? "❤️"
+                    : "💜";
+
+
+            heart.style.left =
+                Math.random() * 100 +
+                "vw";
+
+
+            heart.style.animationDuration =
+                (5 +
+                Math.random() * 5) +
+                "s";
+
+
+            heart.style.fontSize =
+                (14 +
+                Math.random() * 16) +
+                "px";
+
+
+            document.body.appendChild(
+                heart
+            );
+
+
+            setTimeout(() => {
+
+                heart.remove();
+
+            }, 10000);
+
+        }
+
+
+        setInterval(
+            createHeart,
+            1800
+        );
+
+
+    </script>
+
+</body>
+</html>
